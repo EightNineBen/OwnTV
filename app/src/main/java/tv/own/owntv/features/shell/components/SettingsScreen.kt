@@ -108,7 +108,7 @@ import tv.own.owntv.ui.theme.primary
 
 internal enum class TileTone { PRIMARY, SECONDARY, TERTIARY }
 
-private enum class SettingsTab { ROOT, LANGUAGE, SOURCES, EPG, BACKUP, LOCAL_SYNC, CUSTOMIZE, HOME, NETWORK, DNS, METADATA, OPEN_SUBTITLES, WEATHER, CH_NAV, PANEL_WIDTH, GUIDE_WIDTH, GLASS_EFFECT, CONTENT_MENUS, FONTS, BROWSING, SUBTITLE_STYLE, SPORTS }
+private enum class SettingsTab { ROOT, LANGUAGE, SOURCES, EPG, BACKUP, LOCAL_SYNC, CUSTOMIZE, HOME, NETWORK, DNS, METADATA, OPEN_SUBTITLES, WEATHER, CH_NAV, PANEL_WIDTH, GUIDE_WIDTH, GLASS_EFFECT, CONTENT_MENUS, FONTS, BROWSING, SUBTITLE_STYLE, SPORTS, ADDONS }
 
 @Composable
 private fun epgShiftLabel(minutes: Int): String {
@@ -153,6 +153,10 @@ fun SettingsScreen(
     onBack: (() -> Unit)? = null,
     openEpgAdd: Boolean = false,
     onEpgAddConsumed: () -> Unit = {},
+    /** Deep-link from the Addons section's "Manage addons" (this fork's addition); Back returns there via [onAddonsBack]. */
+    openAddons: Boolean = false,
+    onAddonsConsumed: () -> Unit = {},
+    onAddonsBack: () -> Unit = {},
     /** More › Settings: open at a root group, or with search open. */
     start: SettingsStart? = null,
     onStartConsumed: () -> Unit = {},
@@ -163,6 +167,7 @@ fun SettingsScreen(
     var tab by rememberSaveable { mutableStateOf(SettingsTab.ROOT) }
     // Deep-link from the Guide's "Add EPG" button: jump straight to EPG Sources in add mode.
     var consumeEpgAdd by remember { mutableStateOf(false) }
+    var addonsDeepLinked by remember { mutableStateOf(false) }
     var showZoom by remember { mutableStateOf(false) }
     var showAppIcon by remember { mutableStateOf(false) }
     var showPopupSize by remember { mutableStateOf(false) }
@@ -389,6 +394,9 @@ fun SettingsScreen(
     LaunchedEffect(openEpgAdd) {
         if (openEpgAdd) { consumeEpgAdd = true; open(SettingsTab.EPG); onEpgAddConsumed() }
     }
+    LaunchedEffect(openAddons) {
+        if (openAddons) { addonsDeepLinked = true; open(SettingsTab.ADDONS); onAddonsConsumed() }
+    }
 
     // Sub-screens sit below the status cluster (StageContentTop), 6 dp in from the edges.
     val sub = modifier.padding(start = 6.dp, end = 6.dp, bottom = 6.dp, top = StageContentTop)
@@ -399,6 +407,12 @@ fun SettingsScreen(
     when (tab) {
         SettingsTab.LANGUAGE -> { LanguageSettingsScreen(onBack = { tab = SettingsTab.ROOT }, modifier = modifier) }
         SettingsTab.SOURCES -> { ManageSourcesScreen(onBack = { tab = SettingsTab.ROOT }, modifier = modifier) }
+        SettingsTab.ADDONS -> {
+            tv.own.owntv.features.addons.AddonsSettingsScreen(
+                onBack = { tab = SettingsTab.ROOT; if (addonsDeepLinked) { addonsDeepLinked = false; onAddonsBack() } },
+                modifier = modifier,
+            )
+        }
         SettingsTab.EPG -> { tv.own.owntv.features.settings.EpgSourcesScreen(onBack = { tab = SettingsTab.ROOT; consumeEpgAdd = false }, modifier = modifier, startOnAdd = consumeEpgAdd) }
         SettingsTab.BACKUP -> { BackupScreen(onBack = { tab = SettingsTab.ROOT }, modifier = sub) }
         SettingsTab.LOCAL_SYNC -> { LocalSyncScreen(onBack = { tab = SettingsTab.ROOT }, modifier = sub) }
@@ -497,6 +511,12 @@ fun SettingsScreen(
             title = stringResource(R.string.settings_epg_sources), desc = stringResource(R.string.settings_epg_sources_nav_description),
             focus = rowFocus.getValue(SettingsTab.EPG),
             onClick = { open(SettingsTab.EPG) },
+        ),
+        RootRow(
+            tabRowKey(SettingsTab.ADDONS), TileTone.PRIMARY, OwnTVIcon.LAYERS,
+            title = stringResource(R.string.addons_nav), desc = stringResource(R.string.addons_settings_description),
+            focus = rowFocus.getValue(SettingsTab.ADDONS),
+            onClick = { open(SettingsTab.ADDONS) },
         ),
         // The guide's own settings, under a divider of their own: they tune the guide, they are not
         // sources, and sitting straight under the two source lists they read as if they were.
@@ -945,6 +965,7 @@ fun SettingsScreen(
             SettingsSearchEntry(stringResource(R.string.settings_group_profile), stringResource(R.string.profiles_title), stringResource(R.string.settings_search_keywords_profiles), OwnTVIcon.PERSON, TileTone.SECONDARY) { searchQuery = ""; searchMode = false; selectedGroup = SettingsGroup.PROFILE.ordinal },
             SettingsSearchEntry(stringResource(R.string.settings_group_sources), stringResource(R.string.settings_playlists), stringResource(R.string.settings_search_keywords_playlists), OwnTVIcon.PLAYLIST, TileTone.PRIMARY) { open(SettingsTab.SOURCES) },
             SettingsSearchEntry(stringResource(R.string.settings_group_sources), stringResource(R.string.settings_epg_sources), stringResource(R.string.settings_search_keywords_epg), OwnTVIcon.EPG, TileTone.PRIMARY) { open(SettingsTab.EPG) },
+            SettingsSearchEntry(stringResource(R.string.settings_group_sources), stringResource(R.string.addons_nav), stringResource(R.string.addons_search_keywords), OwnTVIcon.LAYERS, TileTone.PRIMARY) { open(SettingsTab.ADDONS) },
             SettingsSearchEntry(stringResource(R.string.settings_group_sources), stringResource(R.string.content_epg_time_offset), stringResource(R.string.settings_search_keywords_epg_offset), OwnTVIcon.EPG, TileTone.SECONDARY,
                 chip = epgShiftLabel(epgOffset), chipTone = if (epgOffset == 0) TileTone.SECONDARY else TileTone.PRIMARY) { saveScroll(); dialogReturn = searchFieldFocus; showEpgOffset = true },
             SettingsSearchEntry(stringResource(R.string.settings_group_sources), stringResource(R.string.settings_epg_guide_days), stringResource(R.string.settings_search_keywords_epg), OwnTVIcon.EPG, TileTone.SECONDARY,

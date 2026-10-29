@@ -40,6 +40,34 @@
 1	file-path	app/src/main/java/tv/own/owntv/OwnTVApp.kt	image_cache
 1	performance	app/src/main/java/tv/own/owntv/OwnTVApp.kt	koin-started
 3	empty	app/src/main/java/tv/own/owntv/core/i18n/LocalizedContent.kt	\0
+8	empty	app/src/main/java/tv/own/owntv/features/addons/AddonsScreen.kt	\0
+2	technical	app/src/main/java/tv/own/owntv/features/addons/AddonsScreen.kt	,
+1	technical	app/src/main/java/tv/own/owntv/features/addons/AddonsScreen.kt	addon
+1	technical	app/src/main/java/tv/own/owntv/features/addons/AddonsScreen.kt	empty
+1	technical	app/src/main/java/tv/own/owntv/features/addons/AddonsScreen.kt	episodes
+2	technical	app/src/main/java/tv/own/owntv/features/addons/AddonsScreen.kt	head
+1	technical	app/src/main/java/tv/own/owntv/features/addons/AddonsScreen.kt	info
+1	protocol	app/src/main/java/tv/own/owntv/features/addons/AddonsScreen.kt	landscape
+1	technical	app/src/main/java/tv/own/owntv/features/addons/AddonsScreen.kt	loading
+1	protocol	app/src/main/java/tv/own/owntv/features/addons/AddonsScreen.kt	movie
+1	technical	app/src/main/java/tv/own/owntv/features/addons/AddonsScreen.kt	nocatalogs
+1	technical	app/src/main/java/tv/own/owntv/features/addons/AddonsScreen.kt	none
+1	technical	app/src/main/java/tv/own/owntv/features/addons/AddonsScreen.kt	nosource
+1	technical	app/src/main/java/tv/own/owntv/features/addons/AddonsScreen.kt	play
+2	technical	app/src/main/java/tv/own/owntv/features/addons/AddonsScreen.kt	search
+1	technical	app/src/main/java/tv/own/owntv/features/addons/AddonsScreen.kt	searching
+1	technical	app/src/main/java/tv/own/owntv/features/addons/AddonsScreen.kt	seasons
+1	technical	app/src/main/java/tv/own/owntv/features/addons/AddonsScreen.kt	stream
+4	empty	app/src/main/java/tv/own/owntv/features/addons/AddonsSettingsScreen.kt	\0
+1	technical	app/src/main/java/tv/own/owntv/features/addons/AddonsSettingsScreen.kt	://
+1	technical	app/src/main/java/tv/own/owntv/features/addons/AddonsSettingsScreen.kt	…
+1	technical	app/src/main/java/tv/own/owntv/features/addons/AddonsSettingsScreen.kt	▶
+3	empty	app/src/main/java/tv/own/owntv/features/addons/AddonsViewModel.kt	\0
+1	protocol	app/src/main/java/tv/own/owntv/features/addons/AddonsViewModel.kt	$k: $v
+1	log	app/src/main/java/tv/own/owntv/features/addons/AddonsViewModel.kt	AddonsViewModel
+2	protocol	app/src/main/java/tv/own/owntv/features/addons/AddonsViewModel.kt	User-Agent
+1	url	app/src/main/java/tv/own/owntv/features/addons/AddonsViewModel.kt	https://v3-cinemeta.strem.io/manifest.json
+1	log	app/src/main/java/tv/own/owntv/features/addons/AddonsViewModel.kt	play addon stream episode=${episode != null}
 1	log	app/src/main/java/tv/own/owntv/features/categorylock/CategoryLockViewModel.kt	CategoryLock
 1	log	app/src/main/java/tv/own/owntv/features/categorylock/CategoryLockViewModel.kt	home rows refresh after a lock change failed profile=$pid
 1	empty	app/src/main/java/tv/own/owntv/features/customize/CustomizeItemsScreen.kt	\0

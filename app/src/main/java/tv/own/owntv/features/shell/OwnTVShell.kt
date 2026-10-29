@@ -165,6 +165,7 @@ fun OwnTVShell(
     var playerMode by shellVm.playerMode
     // Deep-link: the Guide's "Add EPG" button switches to Settings and opens EPG Sources → add.
     var openEpgAdd by remember { mutableStateOf(false) }
+    var openAddonsSettings by remember { mutableStateOf(false) }
     // Setup's "Add a TV guide" lands on the same page once the shell is up.
     LaunchedEffect(Unit) {
         if (PendingShellRequest.addEpg) {
@@ -219,6 +220,7 @@ fun OwnTVShell(
     var guideEntry by remember { mutableStateOf<(() -> Boolean)?>(null) }
     var vodEntry by remember { mutableStateOf<(() -> Boolean)?>(null) }
     var downloadsEntry by remember { mutableStateOf<(() -> Boolean)?>(null) }
+    var addonsEntry by remember { mutableStateOf<(() -> Boolean)?>(null) }
     var moreEntry by remember { mutableStateOf<(() -> Boolean)?>(null) }
     var sportsEntry by remember { mutableStateOf<(() -> Boolean)?>(null) }
     // Home's Live sports row opens a match page through the same request the player's Match button uses.
@@ -1212,6 +1214,9 @@ fun OwnTVShell(
                             onBack = { restoreFocus = true; onSelectSection(MainSection.MORE) },
                             openEpgAdd = openEpgAdd,
                             onEpgAddConsumed = { openEpgAdd = false },
+                            openAddons = openAddonsSettings,
+                            onAddonsConsumed = { openAddonsSettings = false },
+                            onAddonsBack = { restoreFocus = true; onSelectSection(MainSection.ADDONS) },
                             start = settingsStart,
                             onStartConsumed = { settingsStart = null },
                             modifier = Modifier
@@ -1372,6 +1377,15 @@ fun OwnTVShell(
                             modifier = Modifier.fillMaxSize(),
                         )
 
+                        selectedSection == MainSection.ADDONS -> tv.own.owntv.features.addons.AddonsScreen(
+                            onPlayStarted = { openFullscreen(MainSection.ADDONS) },
+                            onManage = { openAddonsSettings = true; onSelectSection(MainSection.SETTINGS) },
+                            onChildFocused = { focusedLayer = ShellLayer.CONTENT },
+                            onEntryHook = { addonsEntry = it },
+                            contentStart = if (navStyle == tv.own.owntv.core.settings.SettingsRepository.NavStyle.DOCKED) 64.mpx else 150.mpx,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+
                         selectedSection == MainSection.SPORTS -> tv.own.owntv.features.sports.SportsScreen(
                             onPlayChannel = { ch, zap -> scope.launch { if (liveVm.ensurePlayingByIdAsync(ch.id, zap)) openFullscreen(MainSection.LIVE_TV) } },
                             onAddPlaylist = { onSelectSection(MainSection.SETTINGS) },
@@ -1454,6 +1468,7 @@ fun OwnTVShell(
                     MainSection.EPG, MainSection.LIVE_TV -> guideEntry
                     MainSection.MOVIES, MainSection.SERIES -> vodEntry
                     MainSection.DOWNLOADS -> downloadsEntry
+                    MainSection.ADDONS -> addonsEntry
                     MainSection.MORE -> moreEntry
                     MainSection.SPORTS -> sportsEntry
                     else -> null

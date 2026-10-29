@@ -159,6 +159,7 @@ private val MenuSections = listOf(
     MainSection.EPG to OwnTVIcon.EPG,
     MainSection.MOVIES to OwnTVIcon.MOVIES,
     MainSection.SERIES to OwnTVIcon.SERIES,
+    MainSection.ADDONS to OwnTVIcon.LAYERS,
     MainSection.DOWNLOADS to OwnTVIcon.DOWNLOADS,
 )
 

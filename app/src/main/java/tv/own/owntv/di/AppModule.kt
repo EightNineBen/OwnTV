@@ -73,6 +73,8 @@ val appModule = module {
         kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob() + kotlinx.coroutines.Dispatchers.Default)
     }
     viewModelOf(::HomeViewModel)
+    viewModelOf(::tv.own.owntv.features.addons.AddonsViewModel)
+    viewModelOf(::tv.own.owntv.features.addons.AddonsSettingsViewModel)
     viewModelOf(::SetupViewModel)
     viewModelOf(::DisplaySizeViewModel)
     // Takes a Context first; Koin resolves it from androidContext().

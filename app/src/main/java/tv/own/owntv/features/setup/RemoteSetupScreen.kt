@@ -114,7 +114,7 @@ fun RemoteSetupScreen(
 
 /** The panel: SCAN WITH YOUR PHONE, the QR beside "or open" + the address + the PIN, then the note. */
 @Composable
-private fun RemotePanel(state: CompanionServerState) {
+internal fun RemotePanel(state: CompanionServerState) {
     SettingPanelHeading(stringResource(R.string.settings_remote_scan))
     val listening = state as? CompanionServerState.Listening ?: return
     Row(horizontalArrangement = Arrangement.spacedBy(24.mpx), verticalAlignment = Alignment.CenterVertically) {
