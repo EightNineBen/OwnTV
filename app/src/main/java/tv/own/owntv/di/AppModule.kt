@@ -1,5 +1,7 @@
 package tv.own.owntv.di
 
+import tv.own.owntv.features.addons.AddonsSettingsViewModel
+import tv.own.owntv.features.addons.AddonsViewModel
 import tv.own.owntv.features.sports.SportsPlayback
 import tv.own.owntv.features.pip.PictureInPicture
 import tv.own.owntv.features.sports.SportsSettingsViewModel
@@ -73,8 +75,8 @@ val appModule = module {
         kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob() + kotlinx.coroutines.Dispatchers.Default)
     }
     viewModelOf(::HomeViewModel)
-    viewModelOf(::tv.own.owntv.features.addons.AddonsViewModel)
-    viewModelOf(::tv.own.owntv.features.addons.AddonsSettingsViewModel)
+    viewModelOf(::AddonsViewModel)
+    viewModelOf(::AddonsSettingsViewModel)
     viewModelOf(::SetupViewModel)
     viewModelOf(::DisplaySizeViewModel)
     // Takes a Context first; Koin resolves it from androidContext().
