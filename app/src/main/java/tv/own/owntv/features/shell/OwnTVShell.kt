@@ -571,8 +571,9 @@ fun OwnTVShell(
         // play on mpv — clear any stale live-on-ExoPlayer flag so the shell renders mpv, not the old channel.
         if (source != MainSection.LIVE_TV) liveVm.clearLiveOnExo()
         // Only Movies/Series/Downloads carry an external-subtitle item context (set by their play
-        // paths). Anything else (Live/EPG/Search-channel) clears it so ADD SUBTITLES never shows stale.
-        if (source != MainSection.MOVIES && source != MainSection.SERIES && source != MainSection.DOWNLOADS) {
+        // paths), and Addons its stream's own subtitles. Anything else (Live/EPG/Search-channel) clears
+        // it so ADD SUBTITLES never shows stale.
+        if (source != MainSection.MOVIES && source != MainSection.SERIES && source != MainSection.DOWNLOADS && source != MainSection.ADDONS) {
             subtitleController.clear()
         }
         // A new stream is opening — make sure any Audio Mode video-off state is cleared, else mpv keeps

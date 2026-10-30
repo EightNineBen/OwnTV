@@ -415,7 +415,7 @@ private fun DetailPage(
                 detail.isSeries -> {
                     val meta = detail.meta!!
                     val seasons = meta.seasons
-                    item(key = "seasons") {
+                    if (seasons.isNotEmpty()) item(key = "seasons") {
                         LazyRow(
                             Modifier.focusGroup(),
                             contentPadding = PaddingValues(start = contentStart + 8.mpx, end = 64.mpx),
@@ -431,7 +431,7 @@ private fun DetailPage(
                             }
                         }
                     }
-                    val episodes = detail.season?.let(meta::episodes).orEmpty()
+                    val episodes = detail.season?.let(meta::episodes) ?: meta.unseasoned
                     item(key = "episodes") {
                         if (episodes.isEmpty()) {
                             Text(stringResource(R.string.addons_no_episodes), style = stageText(20, 500), color = StageColors.Muted, modifier = Modifier.padding(start = contentStart + 20.mpx))

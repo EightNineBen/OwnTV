@@ -23,6 +23,7 @@ import tv.own.owntv.core.addons.MetaDetail
 import tv.own.owntv.core.addons.MetaPreview
 import tv.own.owntv.core.addons.MetaVideo
 import tv.own.owntv.core.player.ExternalPlayerLauncher
+import tv.own.owntv.core.subtitles.SubtitleController
 import tv.own.owntv.core.settings.SettingsRepository
 import tv.own.owntv.player.OwnTVPlayer
 
@@ -35,6 +36,7 @@ class AddonsViewModel(
     private val player: OwnTVPlayer,
     private val settings: SettingsRepository,
     private val externalPlayerLauncher: ExternalPlayerLauncher,
+    private val subtitles: SubtitleController,
 ) : ViewModel() {
 
     val addons: StateFlow<List<InstalledAddon>> = repo.addons
@@ -129,7 +131,7 @@ class AddonsViewModel(
         val loading: Boolean = true,
         val season: Int? = null,
     ) {
-        val isSeries: Boolean get() = meta?.videos?.isNotEmpty() == true
+        val isSeries: Boolean get() = meta?.episodic == true
     }
 
     private val _detail = MutableStateFlow<Detail?>(null)
@@ -206,7 +208,8 @@ class AddonsViewModel(
             externalPlayerLauncher.launch(url = stream.url, title = title, subtitle = s?.episodeLabel, userAgent = userAgent, httpHeaders = headers)
             return false
         }
-        Log.d(TAG, "play addon stream episode=${episode != null}")
+        Log.d(TAG, "play addon stream episode=${episode != null} subtitles=${stream.subtitles.size}")
+        subtitles.setAddonStream(stream.subtitles)
         player.play(
             stream.url,
             title = title,

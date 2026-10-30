@@ -67,7 +67,7 @@
 1	log	app/src/main/java/tv/own/owntv/features/addons/AddonsViewModel.kt	AddonsViewModel
 2	protocol	app/src/main/java/tv/own/owntv/features/addons/AddonsViewModel.kt	User-Agent
 1	url	app/src/main/java/tv/own/owntv/features/addons/AddonsViewModel.kt	https://v3-cinemeta.strem.io/manifest.json
-1	log	app/src/main/java/tv/own/owntv/features/addons/AddonsViewModel.kt	play addon stream episode=${episode != null}
+1	log	app/src/main/java/tv/own/owntv/features/addons/AddonsViewModel.kt	play addon stream episode=${episode != null} subtitles=${stream.subtitles.size}
 1	log	app/src/main/java/tv/own/owntv/features/categorylock/CategoryLockViewModel.kt	CategoryLock
 1	log	app/src/main/java/tv/own/owntv/features/categorylock/CategoryLockViewModel.kt	home rows refresh after a lock change failed profile=$pid
 1	empty	app/src/main/java/tv/own/owntv/features/customize/CustomizeItemsScreen.kt	\0
