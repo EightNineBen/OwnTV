@@ -46,6 +46,7 @@ import coil3.compose.AsyncImage
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import tv.own.owntv.R
+import tv.own.owntv.core.addons.AddonCatalog
 import tv.own.owntv.core.addons.AddonRepository
 import tv.own.owntv.core.addons.AddonStream
 import tv.own.owntv.core.addons.InstalledAddon
@@ -279,7 +280,7 @@ private fun BrowsePage(
                 itemsIndexed(search.results, key = { _, p -> "search\n" + p.addon.transportUrl + "\n" + p.catalog.type + "\n" + p.catalog.id }) { index, p ->
                     val rowKey = "search\n" + p.addon.transportUrl + "\n" + p.catalog.type + "\n" + p.catalog.id
                     PosterRow(
-                        title = stringResource(R.string.addons_catalog_row, p.catalog.name ?: p.catalog.id, p.addon.manifest.name),
+                        title = catalogTitle(p.addon, p.catalog),
                         items = p.items,
                         loading = false,
                         contentStart = contentStart,
@@ -300,7 +301,7 @@ private fun BrowsePage(
                 // Rows that came back empty are dropped rather than shown as a dead strip.
                 if (row.loaded && row.items.isEmpty()) return@itemsIndexed
                 PosterRow(
-                    title = stringResource(R.string.addons_catalog_row, row.catalog.name ?: row.catalog.id, row.addon.manifest.name),
+                    title = catalogTitle(row.addon, row.catalog),
                     items = row.items,
                     loading = !row.loaded,
                     contentStart = contentStart,
@@ -489,6 +490,21 @@ private fun DetailPage(
         val back = openedEpisodeId != null && runCatching { returnFocus.requestFocus() }.getOrDefault(false)
         if (!back) runCatching { primaryFocus.requestFocus() }
     }
+}
+
+/** "Popular Movies · Cinemeta": addons tend to name a movie and a series catalog the same. */
+@Composable
+private fun catalogTitle(addon: InstalledAddon, catalog: AddonCatalog): String {
+    val type = when (catalog.type) {
+        "movie" -> stringResource(R.string.addons_type_movie)
+        "series" -> stringResource(R.string.addons_type_series)
+        "anime" -> stringResource(R.string.addons_type_anime)
+        "channel" -> stringResource(R.string.addons_type_channel)
+        "tv" -> stringResource(R.string.addons_type_tv)
+        // Anything else is the addon's own word for it.
+        else -> catalog.type.replaceFirstChar { it.titlecase() }
+    }
+    return stringResource(R.string.addons_catalog_row, catalog.name ?: catalog.id, type, addon.manifest.name)
 }
 
 @Composable
